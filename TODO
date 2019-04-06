@@ -1,0 +1,5 @@
+[ ] gallery use thumbnails for preview
+[ ] gallery pagination of big galleries
+[ ] vars - "script" - user can specify script which will be used to generate the output
+ex. "script": "ls /"
+[ ] vars - "format": "txt" - escape all html
