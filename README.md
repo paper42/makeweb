@@ -3,7 +3,6 @@ Static site generator designed to be simple to use, but also powerful.
 
 ## Install
 ```sh
-go get github.com/PaperMountainStudio/makeweb
 go get github.com/PaperMountainStudio/makeweb-cli
 ```
 
@@ -26,7 +25,7 @@ touch input/index.html templates/default
 Now you have created basic project structure. Open ```input/index.html``` in your editor and write: 
 ```
 {
-    "title": "makeweb-example"
+    "title": "Makeweb example"
 }
 ---
 content
