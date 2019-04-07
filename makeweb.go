@@ -28,10 +28,14 @@ func render(writer io.Writer, templates *template.Template, vars map[string]inte
 }
 
 func Execute() {
+	err := stageLoadPlugins()
+	if err != nil {
+		panic(err)
+	}
 	// delete output directory
 	// TODO: delete only files that are being overwritten
 	os.RemoveAll("output")
-	err := os.Mkdir("output", os.ModePerm)
+	err = os.Mkdir("output", os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
@@ -81,5 +85,8 @@ func Execute() {
 		panic(err)
 	}
 
-	plugins.EventIndependentAfter()
+	err = plugins.EventIndependentAfter()
+	if err != nil {
+		panic(err)
+	}
 }

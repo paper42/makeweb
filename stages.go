@@ -2,12 +2,39 @@ package makeweb
 
 import (
 	"bytes"
+	"encoding/json"
 	"github.com/PaperMountainStudio/makeweb/plugins"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"os"
 	"path"
 )
+
+func stageLoadPlugins() error {
+	var plugs []string
+
+	ok, err := exists("plugins.json")
+	if err != nil {
+		return err
+	}
+	if ok {
+		jsonstr, err := ioutil.ReadFile("plugins.json")
+		if err != nil {
+			return err
+		}
+
+		err = json.Unmarshal(jsonstr, &plugs)
+		if err != nil {
+			return err
+		}
+	}
+	err = plugins.Init(plugs)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func stageLink() error {
 	ok, err := exists("static")
