@@ -53,21 +53,22 @@ func plugPageInputFs() ([]Page, error) {
 	}
 	return Pages, nil
 }
-func plugPageInputJSON() ([]Page, error) {
-	Pages := make([]Page, 0)
 
-	jsonstr, err := ioutil.ReadFile("/home/michal/temp/pages.json")
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(jsonstr, &Pages)
-	if err != nil {
-		return nil, err
-	}
-
-	return Pages, nil
-}
+// func plugPageInputJSON() ([]Page, error) {
+//     Pages := make([]Page, 0)
+//
+//     jsonstr, err := ioutil.ReadFile("pages.json")
+//     if err != nil {
+//         return nil, err
+//     }
+//
+//     err = json.Unmarshal(jsonstr, &Pages)
+//     if err != nil {
+//         return nil, err
+//     }
+//
+//     return Pages, nil
+// }
 
 // Load variables from filesystem
 // = from json files in "vars" directory
@@ -96,20 +97,21 @@ func plugCollectVarsFs() (map[string]interface{}, error) {
 	}
 	return values, nil
 }
-func plugCollectVarsJSON() (map[string]interface{}, error) {
-	var values map[string]interface{}
-	jsontxt, err := ioutil.ReadFile("vars.json")
-	if err != nil {
-		return nil, err
-	}
 
-	err = json.Unmarshal(jsontxt, &values)
-	if err != nil {
-		return nil, err
-	}
-
-	return values, err
-}
+// func plugCollectVarsJSON() (map[string]interface{}, error) {
+//     var values map[string]interface{}
+//     jsontxt, err := ioutil.ReadFile("vars.json")
+//     if err != nil {
+//         return nil, err
+//     }
+//
+//     err = json.Unmarshal(jsontxt, &values)
+//     if err != nil {
+//         return nil, err
+//     }
+//
+//     return values, err
+// }
 
 // collect templates
 func collectTemplates() (*template.Template, error) {
