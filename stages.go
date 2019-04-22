@@ -103,7 +103,7 @@ func stageRender(pages []Page, varsGlobal map[string]interface{}, templates *tem
 		temporaryVars := vars
 		contentwriter := bytes.NewBufferString("")
 		contentTemplate := template.New("default")
-		contentTemplate.Parse(page.Content)
+		_, err = contentTemplate.Parse(page.Content)
 		temporaryVars["template"] = "default"
 		render(contentwriter, contentTemplate, temporaryVars)
 		page.Content = contentwriter.String()
@@ -115,7 +115,10 @@ func stageRender(pages []Page, varsGlobal map[string]interface{}, templates *tem
 		if err != nil {
 			return err
 		}
-		f.Close()
+		err = f.Close()
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

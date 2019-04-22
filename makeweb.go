@@ -34,7 +34,10 @@ func Execute() {
 	}
 	// delete output directory
 	// TODO: delete only files that are being overwritten
-	os.RemoveAll("output")
+	err = os.RemoveAll("output")
+	if err != nil {
+		panic(err)
+	}
 	err = os.Mkdir("output", os.ModePerm)
 	if err != nil {
 		panic(err)
