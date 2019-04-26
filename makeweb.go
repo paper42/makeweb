@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func render(writer io.Writer, templates *template.Template, vars map[string]interface{}) {
+func render(writer io.Writer, templates *template.Template, vars map[string]interface{}) error {
 	// render "template" using "vars" and write output to "writer"
 	template, ok := vars["template"].(string)
 	if !ok {
@@ -23,24 +23,25 @@ func render(writer io.Writer, templates *template.Template, vars map[string]inte
 	}
 	err := templates.ExecuteTemplate(writer, template, vars)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return nil
 }
 
-func Execute() {
+func Execute() error {
 	err := stageLoadPlugins()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	// delete output directory
 	// TODO: delete only files that are being overwritten
 	err = os.RemoveAll("output")
 	if err != nil {
-		panic(err)
+		return err
 	}
 	err = os.Mkdir("output", os.ModePerm)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	// TODO: write only files that need to be written
 
@@ -49,12 +50,12 @@ func Execute() {
 	log.Println("Collecting variables")
 	ok, err := exists("vars")
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if ok {
 		varsGlobal, err = collectVars()
 		if err != nil {
-			panic(err)
+			return err
 		}
 	} else {
 		log.Println("WARNING: vars directory not found")
@@ -64,7 +65,7 @@ func Execute() {
 	log.Println("Collecting templates")
 	templates, err := collectTemplates()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	templates = templates.Option("missingkey=error") // throw error if key is not found
 
@@ -72,24 +73,25 @@ func Execute() {
 	log.Println("Collecting pages")
 	pages, err := collectPages()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// render
 	log.Println("Render:")
 	err = stageRender(pages, varsGlobal, templates)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// hardlink files in static directory
 	err = stageLink()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = plugins.EventIndependentAfter()
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return nil
 }

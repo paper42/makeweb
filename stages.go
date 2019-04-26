@@ -104,14 +104,23 @@ func stageRender(pages []Page, varsGlobal map[string]interface{}, templates *tem
 		contentwriter := bytes.NewBufferString("")
 		contentTemplate := template.New("default")
 		_, err = contentTemplate.Parse(page.Content)
+		if err != nil {
+			return err
+		}
 		temporaryVars["template"] = "default"
-		render(contentwriter, contentTemplate, temporaryVars)
+		err = render(contentwriter, contentTemplate, temporaryVars)
+		if err != nil {
+			return err
+		}
 		page.Content = contentwriter.String()
 		vars["text"] = template.HTML(page.Content)
 
 		// write
 		f, err := os.OpenFile(outPath, os.O_CREATE|os.O_WRONLY, 0644)
-		render(f, templates, vars)
+		if err != nil {
+			return err
+		}
+		err = render(f, templates, vars)
 		if err != nil {
 			return err
 		}
