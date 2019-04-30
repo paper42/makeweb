@@ -100,7 +100,9 @@ func stageRender(pages []Page, varsGlobal map[string]interface{}, templates *tem
 			return err
 		}
 
-		temporaryVars := vars
+		// copy vars to temporaryVars
+		temporaryVars := CopyMap(vars)
+
 		contentwriter := bytes.NewBufferString("")
 		contentTemplate := template.New("default")
 		_, err = contentTemplate.Parse(page.Content)
